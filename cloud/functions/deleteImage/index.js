@@ -190,10 +190,11 @@ module.exports = async (ctx) => {
 
   } catch (err) {
     console.error('【deleteImage 异常】', err.message, err.stack);
+    const detail = `${err && err.code ? `[${err.code}] ` : ''}${err && err.message ? err.message : ''}`.trim();
     return { 
       success: false,
       error: 'Delete failed',
-      message: err.message 
+      message: detail || 'Delete failed'
     };
   }
 };

@@ -613,7 +613,7 @@ Page({
               return;
             }
 
-            const errorMsg = result.error || result.message || '删除失败';
+            const errorMsg = result.message || result.error || '删除失败';
 
             // 兜底路径：deleteImage 缺少密钥时，改用 uploadImage 重排，保证功能可用
             if (errorMsg.includes('Missing COS secrets')) {
