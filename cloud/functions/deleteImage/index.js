@@ -104,9 +104,22 @@ module.exports = async (ctx) => {
     const warnings = [];
     const deleteIndex = Number(indexToDelete);
     const totalCount = Number(currentCount);
+    const hasReindexRequest =
+      isSafeCatName(catName) &&
+      Number.isInteger(deleteIndex) &&
+      Number.isInteger(totalCount) &&
+      deleteIndex >= 1 &&
+      totalCount >= 1 &&
+      deleteIndex <= totalCount;
 
     // 无 COS 密钥时，至少支持“按 fileName 删除单图”（用于客户端兜底后的尾图清理）
     if (!SECRET_ID || !SECRET_KEY) {
+      if (hasReindexRequest) {
+        return {
+          success: false,
+          error: 'Missing COS secrets in environment variables'
+        };
+      }
       if (fileName) {
         if (!isSafeFileName(fileName)) {
           return { success: false, error: 'Invalid file name' };
@@ -126,13 +139,7 @@ module.exports = async (ctx) => {
     }
 
     // 1) 新调用优先：删除附加图并自动重排，如 name2.jpg 删除后，name3.jpg -> name2.jpg
-    const canReindex =
-      isSafeCatName(catName) &&
-      Number.isInteger(deleteIndex) &&
-      Number.isInteger(totalCount) &&
-      deleteIndex >= 1 &&
-      totalCount >= 1 &&
-      deleteIndex <= totalCount;
+    const canReindex = hasReindexRequest;
 
     if (canReindex) {
       const selectedKey = `picture/${catName}${deleteIndex}.jpg`;

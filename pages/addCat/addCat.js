@@ -616,7 +616,7 @@ Page({
             const errorMsg = result.message || result.error || '删除失败';
 
             // 兜底路径：deleteImage 缺少密钥时，改用 uploadImage 重排，保证功能可用
-            if (errorMsg.includes('Missing COS secrets')) {
+            if (errorMsg.includes('Missing COS secrets') || errorMsg.includes('space_cloud_storage_not_found')) {
               await this.reindexAdditionalImagesByUpload(catName, indexToDelete, currentCount);
               const cleaned = await this.cleanupTailFileAfterFallback(catName, currentCount);
               this.setData({
