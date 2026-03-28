@@ -62,7 +62,7 @@
     data-url="{{url}}{{cat.name}}.png"
   />
 </view>
-<button class="btn-upload" bindtap="uploadPngAvatar">上传/更换圆形头像 (.png)</button>
+<button class="btn-upload" bindtap="uploadPngAvatar">上传/更换圆形头像（裁剪或直传 .png）</button>
 
 <!-- ============ 首图预览与更换 ============ -->
 <view class="head1">

@@ -383,13 +383,51 @@ Page({
     if (!cat.name?.trim()) {
       return wx.showToast({ title: '请先填写猫咪名字', icon: 'none' });
     }
+    const name = cat.name.trim();
+    wx.showActionSheet({
+      itemList: [
+        '在小程序内裁剪圆形头像（可放大）',
+        '直接上传已裁好的头像'
+      ],
+      success: (res) => {
+        const needCrop = res.tapIndex === 0;
+        this.chooseAvatarSource(name, needCrop);
+      }
+    });
+  },
 
+  chooseAvatarSource(name, needCrop) {
     wx.chooseImage({
       count: 1,
       sizeType: ['original'],
       success: (res) => {
-        const tempPath = res.tempFilePaths[0];
-        this.checkAndUploadPng(tempPath, cat.name.trim());
+        const tempPath = res.tempFilePaths && res.tempFilePaths[0];
+        if (!tempPath) {
+          wx.showToast({ title: '未获取到图片', icon: 'none' });
+          return;
+        }
+
+        if (!needCrop) {
+          this.checkAndUploadPng(tempPath, name);
+          return;
+        }
+
+        wx.navigateTo({
+          url: `/pages/crop/crop?src=${encodeURIComponent(tempPath)}&name=${encodeURIComponent(name)}`,
+          events: {
+            onCroppedImage: (payload) => {
+              const croppedPath = payload && payload.path;
+              if (!croppedPath) {
+                wx.showToast({ title: '裁剪结果无效', icon: 'none' });
+                return;
+              }
+              this.checkAndUploadPng(croppedPath, name);
+            }
+          },
+          fail: () => {
+            wx.showToast({ title: '打开裁剪页失败', icon: 'none' });
+          }
+        });
       },
       fail: () => wx.showToast({ title: '选择图片失败', icon: 'none' })
     });

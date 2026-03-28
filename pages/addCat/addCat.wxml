@@ -60,7 +60,7 @@
 <view wx:else style="text-align:center; color:#999; font-size:26rpx; margin: 20rpx 0;">
   可不上传；如需上传，请先填写名字
 </view>
-<button class="btn-upload" bindtap="uploadPngAvatar">上传/更换圆形头像 (.png)</button>
+<button class="btn-upload" bindtap="uploadPngAvatar">上传/更换圆形头像（裁剪或直传 .png）</button>
 
 <view class="head1">
   <text user-select="true">当前首图（{{cat.name}}.jpg）</text>
