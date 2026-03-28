@@ -1,0 +1,36 @@
+<view class="page">
+  <view class="hint">拖动并双指缩放，调整圆形头像范围</view>
+
+  <view class="crop-wrap" style="width: {{cropSize}}px; height: {{cropSize}}px;">
+    <movable-area class="movable-area" style="width: {{cropSize}}px; height: {{cropSize}}px;">
+    <movable-view
+      class="movable-view"
+      style="width: {{baseWidth}}px; height: {{baseHeight}}px;"
+      direction="all"
+      scale="{{true}}"
+      scale-min="{{minScale}}"
+      scale-max="{{maxScale}}"
+        x="{{x}}"
+        y="{{y}}"
+        bindchange="onMoveChange"
+        bindscale="onScaleChange"
+      >
+        <image
+          src="{{src}}"
+          style="width: 100%; height: 100%;"
+          mode="aspectFill"
+        />
+      </movable-view>
+    </movable-area>
+
+    <view class="mask-layer"></view>
+    <view class="circle-frame"></view>
+  </view>
+
+  <button class="confirm-btn" bindtap="confirmCrop">确认裁剪</button>
+
+  <canvas
+    canvas-id="crop-output-canvas"
+    style="position: fixed; left: -9999px; width: {{outputSize}}px; height: {{outputSize}}px;"
+  ></canvas>
+</view>

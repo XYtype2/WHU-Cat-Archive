@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+
+# WeChat Mini Program local/private config
+project.private.config.json
+
+# Editor
+.vscode/

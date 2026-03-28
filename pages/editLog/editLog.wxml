@@ -1,0 +1,97 @@
+<view class="container">
+  <!-- 第一步 -->
+  <block wx:if="{{step === 'title'}}">
+    <input class="input-title" placeholder="请输入日志标题" value="{{title}}" bindinput="onTitleInput" />
+    <input class="input-author" placeholder="请输入作者姓名" value="{{author}}" bindinput="onAuthorInput" />
+    <button class="btn-save" bindtap="saveTitle">下一步</button>
+  </block>
+
+  <!-- 第二步 -->
+  <block wx:if="{{step === 'content'}}">
+    <input class="input-title" placeholder="请输入日志标题" value="{{title}}" bindinput="onTitleInput" />
+    <input class="input-author" placeholder="请输入作者姓名" value="{{author}}" bindinput="onAuthorInput" />
+
+    <!-- 封面图 -->
+    <view class="upload-section">
+      <text class="section-title">封面图（将命名为 {{logId}}.jpg）</text>
+      <button class="btn-upload" bindtap="uploadCover">选择封面图</button>
+      <image wx:if="{{coverUrl}}" src="{{coverUrl}}" class="preview-img" bindtap="previewImage" mode="aspectFill" />
+    </view>
+
+    <!-- 文中图片 -->
+    <view class="upload-section">
+      <text class="section-title">上传文中图片（上传后复制标签，手动粘贴到正文）</text>
+      <button class="btn-upload" bindtap="uploadInlineImage">上传图片</button>
+      <view wx:for="{{inlineImages}}" wx:key="index" class="img-preview-row">
+        <view class="preview-container-small">
+          <image src="{{item.url}}" class="preview-img-small" bindtap="previewImage" data-url="{{item.url}}" mode="aspectFill" />
+          <button class="btn-copy" size="mini" data-tag="{{item.tag}}" bindtap="copyImgTag">复制链接</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 内容编辑区 -->
+    <textarea 
+      class="textarea-content" 
+      placeholder="请输入日志内容... 可粘贴 [IMG:xxx] 标签"
+      value="{{content}}" 
+      bindinput="onContentInput" 
+      show-confirm-bar="{{false}}"
+      maxlength="{{-1}}" 
+    />
+
+    <!-- 文末图数量设置 -->
+    <view class="upload-section">
+      <text class="section-title">文末配图设置</text>
+      
+      <block wx:if="{{!isFooterCountSet}}">
+        <view style="display:flex; align-items:center; margin:20rpx 0;">
+          <text>数量（1-9）：</text>
+          <input 
+            type="number" 
+            value="{{footerCountInput}}" 
+            bindinput="onFooterCountInput" 
+            placeholder="1-9"
+            style="border:1px solid #ccc; padding:10rpx; margin:0 20rpx; width:100rpx;"
+          />
+          <button size="mini" bindtap="confirmFooterCount">确认</button>
+        </view>
+      </block>
+
+      <block wx:if="{{isFooterCountSet}}">
+        <button size="mini" bindtap="resetFooterCount" style="margin-bottom:20rpx;">重新设置数量</button>
+        
+        <!-- 文末图预览 + 更换 -->
+        <view wx:for="{{footerImages}}" wx:key="index" style="display:flex; align-items:center; margin:15rpx 0;">
+          <image 
+            src="{{item}}" 
+            style="width:120rpx; height:120rpx; object-fit:cover; border:1px solid #eee; margin-right:20rpx;"
+            bindtap="previewImage" 
+            data-url="{{item}}"
+          />
+          <button 
+            size="mini" 
+            bindtap="replaceFooterImage" 
+            data-index="{{index + 1}}"
+          >
+            更换第{{index + 1}}张
+          </button>
+        </view>
+      </block>
+    </view>
+
+    <!-- 标签 -->
+    <input class="input-tags" placeholder="标签（用英文逗号分隔）" value="{{tagsStr}}" bindinput="onTagsInput" />
+
+    <!-- 按钮 -->
+    <button class="btn-save" bindtap="saveLog">保存日志</button>
+    <button wx:if="{{isEditing}}" class="btn-delete" bindtap="deleteLog">删除日志</button>
+  </block>
+</view>
+
+<!-- 隐藏的 canvas 用于图片压缩 -->
+<canvas
+  style="width: 1px; height: 1px; position: fixed; left: -1000px;"
+  type="2d"
+  id="compressCanvas"
+></canvas>

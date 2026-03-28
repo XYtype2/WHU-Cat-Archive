@@ -1,0 +1,40 @@
+<!-- pages/logsDetail/logsDetail.wxml -->
+<view class="container">
+  <text class="title">{{log.title}}</text>
+  <text class="meta">作者：{{log.author || '匿名'}} | {{formattedCreateTime}}</text>
+
+  <!-- 正文：支持 [IMG:xxx] 插入 -->
+  <view class="content-block">
+    <block wx:for="{{renderedContent}}" wx:key="index">
+      <text wx:if="{{item.type === 'text'}}" class="content">{{item.text}}</text>
+      <view wx:elif="{{item.type === 'image'}}" class="inline-image-container">
+        <image
+          src="{{item.url}}"
+          mode="widthFix"
+          bindtap="previewInlineImage"
+          data-src="{{item.url}}"
+          class="inline-image"
+          catcherror="onInlineImageError"
+        />
+      </view>
+    </block>
+  </view>
+
+  <!-- 附加图片（log_001_img1.jpg ~ log_001_img6.jpg） -->
+  <view wx:if="{{validAppendImages.length > 0}}" class="images-section">
+    <view class="image-grid">
+      <block wx:for="{{appendImages}}" wx:key="index">
+        <view wx:if="{{item}}" class="grid-item">
+          <image
+            src="{{urlPrefix}}{{item}}"
+            mode="aspectFill"
+            bindtap="previewAppendImage"
+            data-index="{{index}}"
+            class="grid-img"
+            catcherror="onAppendImageError"
+          />
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

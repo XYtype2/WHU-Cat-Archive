@@ -1,0 +1,13 @@
+/*搜索框*/
+.search {
+  font-size: 32rpx;
+  margin-left: 50rpx;
+  height: 32rpx;
+  /* color: #cf1e1e; */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

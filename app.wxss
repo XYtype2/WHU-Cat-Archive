@@ -1,0 +1,282 @@
+/**app.wxss**/
+
+.itemname1 {
+  font-size: 27rpx;
+  margin-left: 40rpx;
+  margin-bottom: 30rpx;
+  margin-top: 30rpx;
+  display: flex;
+  color: #888888;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.divLineLong {
+  background: #eee;
+  height: 3rpx;
+  margin-left: 40rpx;
+}
+
+.itemname2 {
+  font-size: 30rpx;
+  color: #353535;
+  font-weight: normal;
+  margin-right: 40rpx;
+  margin-bottom: 30rpx;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.title {
+  font-size: 45rpx;
+  text-align: center;
+  margin-top: 14rpx;
+  margin-bottom: 14rpx;
+  font-weight: bold;
+}
+
+.head1 {
+  font-size: 35rpx;
+  margin-left: 40rpx;
+  margin-bottom: 20rpx;
+  margin-top: 50rpx;
+  font-weight: bold;
+  color: black;
+}
+
+.body {
+  font-size: 30rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  margin-bottom: 30rpx;
+  /* margin-top: 14rpx; */
+  color: #353535;
+  letter-spacing: 5rpx;
+  line-height: 55rpx;
+  text-align: justify;
+  user-select: "true";
+}
+
+.circle {
+  height: 150rpx;
+  /* margin-top: 60rpx;
+  margin-bottom: 50rpx; */
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.bodybold {
+  font-weight: bold;
+}
+
+/* 会徽 */
+.board image {
+  width: 100%;
+  height: 300rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+
+/*每一只猫*/
+.catitem {
+  height: 105rpx;
+  /* margin-top: 30rpx; */
+  /* margin-bottom: 30rpx; */
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/*分割线样式*/
+.divLine {
+  background: #eee;
+  height: 3rpx;
+  margin-left: 150rpx;
+}
+
+/* app.wxss 或 index.wxss */
+.top-gap {
+  margin-top: 29rpx; /* 试试 20rpx ~ 40rpx，找到最舒服的值 */
+}
+
+/*猫名称*/
+.cat-name {
+  font-size: 32rpx;
+  flex-direction: row;
+  margin-left: 150rpx;
+  color: #353535;
+  text-align: center;
+  font-weight:400;
+}
+
+.adoption {
+  font-size: 32rpx;
+  flex-direction: row;
+  /* margin-right: 50rpx; */
+  color: white;
+  justify-content: right;
+  text-align: right;
+  margin-right: 40rpx;
+  background-color: #cf1e1e;
+  width: 3em;
+}
+
+/*搜索框*/
+
+.search {
+  font-size: 32rpx;
+  margin-left: 150rpx;
+  height: 32rpx;
+}
+
+.avator {
+  width: 90rpx;
+  height: 90rpx;
+  margin-left: 40rpx;
+  position: absolute;
+  align-items: center;
+  display: flex;
+  border-radius: 50%; 
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+}
+
+.copy {
+  color: #576b95;
+  font-weight: bold;
+}
+
+.play {
+  width: 45rpx;
+  height: 45rpx;
+  margin-right: 20rpx;
+}
+
+.staff {
+  font-size: 20rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  line-height: 45rpx;
+  margin-bottom: 0rpx;
+  margin-top: -10rpx;
+  color: #888888;
+  text-align: left;
+}
+
+.cat_image {
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.cat-card {
+  font-size: 45rpx;
+  color: black;
+  font-weight: bold;
+  justify-content: flex-start;
+}
+
+.sound {
+  margin-top: 9rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.adContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.adContainer ad {
+  width: 100%;
+}
+
+.edit-input {
+  display: block;
+  height: 60rpx;
+  font-size: 35rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #DFDFDF;
+  color: #cf1e1e;
+  /* width: 100%; */
+  margin-top: 10rpx;
+}
+
+.edit-textarea {
+  display: block;
+  width: calc(100% - 80rpx); /* 100% 减去左右各 40rpx */
+  min-height: 120rpx;
+  max-height: 500rpx; /* 可滚动的最大高度 */
+  padding: 20rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  margin-top: 10rpx;
+  font-size: 35rpx;
+  line-height: 1.5;
+  color: #cf1e1e;
+  background: #ffffff;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+}
+
+.underline {
+  text-decoration: underline;
+  color: #576b95; /* 蓝色更醒目，可选 */
+  font-weight: bold;
+}
+
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10rpx); /* 调整这个值可以改变跳动的高度 */
+  }
+}
+
+.bounce-text {
+  font-size: 22rpx;
+  color: #000000;
+  animation: bounce 1.5s infinite ease-in-out; /* 调整时间可以改变跳动速度 */
+}
+
+/* 在你的.wxss文件中加入以下代码 */
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.shine-text {
+  position: relative;
+  font-size: 22rpx;
+  color: #000000;
+  overflow: hidden;
+}
+
+.shine-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* 确保覆盖整个文本宽度 */
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.5), rgba(255,255,255,0));
+  animation: shine 2s infinite;
+  pointer-events: none;
+}

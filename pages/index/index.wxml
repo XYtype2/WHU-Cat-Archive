@@ -1,0 +1,196 @@
+<!--index.wxml-->
+
+
+
+<view class="circle">
+  <image lazy-load='true' bindtap="imageTap" class='avator' src="/pages/images/huihui.png" mode='aspectFill'></image>
+  <navigator class="circle" url="/pages/search/search">
+    <text class="search">点击搜索</text>
+  </navigator>
+</view>
+
+<view class="navbar">
+  <text wx:for="{{navbar}}" data-idx="{{index}}" class="item {{currentTab==index ? 'active' : ''}}" wx:key="unique" bindtap="navbarTap">{{item}}</text>
+</view>
+
+
+
+<!-- 学部小选项栏（只在非“在校”页面显示） -->
+<view class="sub-navbar" wx:if="{{currentTab != 0}}">
+  <text wx:for="{{subDepartments}}"
+        data-idx="{{index}}"
+        wx:key="subtab"
+        bindtap="subNavbarTap"
+        class="sub-item {{currentSubTab==index ? 'active' : ''}}">
+    {{item}}
+  </text>
+</view>
+
+<!-- 在校 -->
+<view hidden="{{currentTab!==0}}">
+
+<!-- 固定的分类入口 -->
+<view class="divLine top-gap"></view>
+<navigator url="/pages/colors/colors?classification=玳瑁及三花">
+  <view class="catitem">
+    <image class='avator' src="/pages/images/三花.png"></image>
+    <view class="cat-name">双色及加白</view>
+  </view>
+</navigator>
+<view class="divLine"></view>
+
+<navigator url="/pages/colors/colors?classification=狸花和狸白">
+  <view class="catitem">
+    <image class='avator' src="/pages/images/狸花.png"></image>
+    <view class="cat-name">棕色及加白</view>
+  </view>
+</navigator>
+<view class="divLine"></view>
+
+<navigator url="/pages/colors/colors?classification=橘猫及橘白">
+  <view class="catitem">
+    <image class='avator' src="/pages/images/橘猫.png"></image>
+    <view class="cat-name">橘色及加白</view>
+  </view>
+</navigator>
+<view class="divLine"></view>
+
+<navigator url="/pages/colors/colors?classification=黑猫和奶牛">
+  <view class="catitem">
+    <image class='avator' src="/pages/images/奶牛.png"></image>
+    <view class="cat-name">黑色及加白</view>
+  </view>
+</navigator>
+<view class="divLine"></view>
+
+<navigator url="/pages/colors/colors?classification=纯白">
+  <view class="catitem">
+    <image class='avator' src="/pages/images/纯色.png"></image>
+    <view class="cat-name">纯白</view>
+  </view>
+</navigator>
+<view class="divLine"></view>
+
+<navigator url="/pages/all/all">
+  <view class="catitem">
+    <image class='avator' src="/pages/images/huihui.png"></image>
+    <view class="cat-name">所有</view>
+  </view>
+</navigator>
+
+<view class="divLine"></view>
+
+<!-- 随机猫卡片【放在分类之后】 -->
+<view wx:if="{{randomCat}}" class="random-card" bindtap="goToRandomCat">
+
+  <!-- 背景大图 -->
+  <image class="random-bg" mode="aspectFill"
+    src="{{url}}{{randomCat.name}}.jpg" />
+
+  <text class="random-tag">随机认识一只猫</text>
+
+  <!-- 前景内容 -->
+  <view class="random-content">
+    <image class="random-avatar"
+      src="{{url}}{{randomCat.name}}.png" mode="aspectFill" />
+    <view class="random-name">{{randomCat.name}}</view>
+  </view>
+
+</view>
+
+<!-- 底部按钮 -->
+<!-- <view class="footer-fixed" bindtap="goToTencentDoc">
+  长期征集流浪猫相关信息，点击提交
+</view> -->
+<navigator target = "miniProgram" short-link = "#小程序://腾讯文档/lc4X6optXjQPK0c" class="footer-fixed" bindtap="copy">
+长期征集流浪猫相关信息，点击提交
+</navigator>
+
+</view>
+
+
+<!-- 毕业 -->
+
+<!-- <text> \n </text> -->
+
+<view hidden="{{currentTab!==1}}">
+  <navigator block wx:for="{{fostered_cat}}" wx:key="_id" url="/pages/catDetail/catDetail?_id={{item._id}}">
+    <view bindlongpress='editCat' data-_id="{{item._id}}" class="catitem">
+      <image lazy-load='true' class='avator' src="{{url}}{{item.name}}.png" mode='aspectFill'></image>
+      <view class="cat-name">{{item.name}}</view>
+    </view>
+    <view class="divLine"></view>
+  </navigator>
+</view>
+
+<!-- 休学 -->
+
+<view hidden="{{currentTab!==2}}">
+  <navigator block wx:for="{{unknown_cat}}" wx:key="_id" url="/pages/catDetail/catDetail?_id={{item._id}}">
+    <view bindlongpress='editCat' data-_id="{{item._id}}" class="catitem">
+      <image lazy-load='true' class='avator' src="{{url}}{{item.name}}.png" mode='aspectFill'></image>
+      <view class="cat-name">{{item.name}}</view>
+    </view>
+    <view class="divLine"></view>
+  </navigator>
+</view>
+
+<!-- 喵星 -->
+
+<view hidden="{{currentTab!==3}}">
+  <navigator block wx:for="{{dead_cat}}" wx:key="_id" url="/pages/catDetail/catDetail?_id={{item._id}}">
+    <view bindlongpress='editCat' data-_id="{{item._id}}" class="catitem">
+      <image lazy-load='true' class='avator' src="{{url}}{{item.name}}.png" mode='aspectFill'></image>
+      <view class="cat-name">{{item.name}}</view>
+    </view>
+    <view class="divLine"></view>
+  </navigator>
+</view>
+
+ <!-- 回到顶部按钮 -->
+ <view class="back-to-top" wx:if="{{showBackToTop}}" bindtap="scrollToTop">
+  <image class="back-icon" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/back-to-top.png" />
+</view>
+
+ <!-- 猫爪按钮（非在校页面显示） -->
+<view
+  wx:if="{{currentTab !== 0}}"
+  class="paw-button"
+  bindtap="toggleFeedingNotice">
+  <image
+    class="paw-icon"
+    src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/catpaw.png" />
+</view>
+
+
+<!-- 投喂须知弹窗 -->
+<view class="modal-mask" wx:if="{{showFeedingModal}}" bindtap="closeFeedingModal">
+  <view class="modal-content" catchtap>
+    <view class="modal-title">温馨提示</view>
+
+    <view class="modal-body">
+      <text>·请不要给猫咪投喂</text>
+
+      <text class="highlight underline">火腿肠</text>
+      <text class="highlight">、剩饭、骨头、鱼刺、牛奶、奶茶</text>
+      <text>等人类食物，以及</text>
+
+      <text class="highlight underline">猫条</text>
+      <text class="highlight">、零食罐头、三无冻干</text>
+      <text>等零食类宠物食品。</text>
+    </view>
+
+    <view class="modal-body">
+      <text>·</text>
+      <text class="highlight">如果遇到任何紧急情况，请通过微信、社群和小红书尽快联系我们。</text>
+    </view>
+
+    <view class="modal-body">
+      <text>·本小程序所展示的图片均为用户投稿或授权内容，版权归原作者所有。如有署名错误或侵权情况，请权利人与我们联系，我们将在核实后及时处理。</text>
+    </view>
+
+    <view class="modal-body">
+      <text>·如果您有任何关于猫咪的信息，都可以通过首页下方链接向我们提供！</text>
+    </view>
+  </view>
+</view>

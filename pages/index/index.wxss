@@ -1,0 +1,207 @@
+/* ================== 页面基础 ================== */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ================== 顶部导航 ================== */
+.navbar {
+  display: flex;
+  background: #fff;
+  line-height: 80rpx;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar .item {
+  flex: 1;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 32rpx;
+  color: #888;
+  position: relative;
+}
+
+.navbar .item.active {
+  color: #cf1e1e;
+}
+
+.navbar .item.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 40rpx;
+  right: 40rpx;
+  height: 4rpx;
+  background: #cf1e1e;
+}
+
+/* ================== 搜索 ================== */
+.search {
+  display: flex;
+  align-items: center;
+  height: 150rpx;
+  margin-left: 150rpx;
+  font-size: 32rpx;
+  color: #888;
+}
+
+/* ================== 子分类栏 ================== */
+.sub-navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: -25rpx;
+}
+
+.sub-item {
+  font-size: 28rpx;
+  color: #888;
+  padding-bottom: 6rpx;
+}
+
+.sub-item.active {
+  color: #cf1e1e;
+  border-bottom: 3rpx solid #cf1e1e;
+}
+
+/* ================== 随机猫卡片 ================== */
+.random-card {
+  position: relative;
+  width: 90%;
+  height: 150rpx;
+  margin: 40rpx auto;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+}
+
+.random-bg {
+  width: 100%;
+  height: 100%;
+  filter: blur(6rpx) brightness(0.9);
+}
+
+.random-tag {
+  position: absolute;
+  top: 16rpx;
+  left: 20rpx;
+  font-size: 22rpx;
+  color: #fff;
+  z-index: 2;
+}
+
+.random-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26rpx;
+}
+
+.random-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.5);
+}
+
+.random-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 8rpx rgba(0,0,0,0.5);
+}
+
+/* ================== 底部固定入口 ================== */
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 24rpx 0;
+  font-size: 20rpx;
+  text-align: center;
+  color: #777;
+  background: #fff;
+  z-index: 999;
+}
+
+.content {
+  padding-bottom: 120rpx;
+}
+
+/* ================== 浮动按钮 ================== */
+.back-to-top,
+.paw-button {
+  position: fixed;
+  right: 30rpx;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.back-to-top {
+  bottom: 100rpx;
+}
+
+.paw-button {
+  bottom: 200rpx;
+}
+
+.back-icon,
+.paw-icon {
+  width: 48rpx;
+  height: 48rpx;
+  object-fit: contain;
+}
+
+/* ================== 弹窗 ================== */
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  width: 85%;
+  padding: 40rpx 30rpx;
+  background: #fff;
+  border-radius: 20rpx;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10rpx;
+}
+
+.modal-body {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.highlight {
+  font-weight: bold;
+  color: #3a3939;
+}
+.underline {
+  text-decoration: underline;
+  text-decoration-thickness: 2rpx; /* 可调 */
+  text-underline-offset: 6rpx;     /* 小程序支持 */
+}
+

@@ -1,0 +1,158 @@
+<!--index.wxml-->
+
+<!-- <view class="title">武大TNR小分队</view> -->
+
+<view class="img-box" bindtap="goToCatMap">
+  <image mode="widthFix"
+         src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/pingguo.png"
+         class="img clickable-image"/>
+</view>
+
+<view class="head1">介绍</view>
+
+<view class="body">
+  我们是武大TNR小分队，武大爱猫学生自发形成的流浪猫救助志愿者团队，当前武大流浪猫救助的主力军，救助全校90%以上流浪猫。
+</view>
+
+<view class="img-number-box">
+  <image mode="widthFix"
+         src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/number.jpg"
+         class="img"/>
+</view>
+
+
+
+<view class="body">
+我们始终为控制武大流浪猫数量、提升武大流浪猫生活质量、促进武大人猫和谐而努力。
+</view>
+
+
+<view class="head1">重要声明❗️</view>
+
+<view class="body">
+1️⃣ 不要随意接触流浪猫！
+</view>
+
+<view class="body">
+2️⃣ 遗弃家养猫或人为将校外猫带入校园统称为弃猫。请勿弃猫至武大校园，我们不会救助任何弃猫。如遇上述情况，必追究到底，并将弃猫移出校园。
+</view>
+
+<!--<web-view src="https://mp.weixin.qq.com/s/TIuxaXIpwyMR_6JRfU9fPw"> </web-view>-->
+<!-- <official-account></official-account> -->
+
+<!--
+<view class="body">
+  若无救助管理，人类遗弃所致的流浪动物对城市生态环境具有一定的负面影响。为了我们共同的家园，请大家不在任何地方遗弃宠物，支持科学救助，用领养代替购买。流浪不是猫的归宿，北大也不是流浪猫的天堂。尽管同学们努力照料，由于车祸、伤病、犬咬等原因，北大校内的流浪猫仍然经常离我们而去，这是流浪生活的常态，其中一些故事可以在北大猫协公众号后台回复【日光】查看。
+</view>-->
+
+
+<view class="head1">联系我们</view>
+
+<!--<view style="display:flex; justify-content:center; align-items:center;" bindtap="previewImg">
+  <image mode="widthFix" src="https://pku-lostangel.oss-cn-beijing.aliyuncs.com/二维码.jpg" style="width: 93%;">
+  </image>
+</view>-->
+
+<view class="body">
+  1️⃣ 扫码添加武大TNR小分队小助手，加群快乐吸猫👇
+</view>
+<!-- <view style="display:flex; justify-content:center; align-items:center;">
+  <image mode="widthFix" src="/pages/images/xiaozhushou.jpg" style="width: 90%;">
+  </image>
+</view> -->
+<view style="display:flex; justify-content:center; align-items:center;">
+  <image mode="widthFix" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/xiaozhushou.jpg" style="width: 90%;" class="cat_image" bindtap='previewImage'></image>
+</view>
+<view class="body">
+  微信号：<text bindtap="copy1" class="copy">WHUTNR</text>
+</view>
+<view class="body">
+  捐助&合作&求助可直接联系。
+</view>
+
+<view class="body">
+  2️⃣ 点击蓝字，跳转到我们的小红书账号📕
+</view>
+<view class="body">
+  👇 最好的高校猫咪自媒体
+</view>
+<view class="body">
+<navigator target = "miniProgram" short-link = "#小程序://小红书/8cqwScNu0fKVM9o">
+  @<text bindtap="copy3" data-text="武大TNR小分队" class="underline">武大TNR小分队</text>
+</navigator>
+</view>
+
+<view style="display:flex; justify-content:center; align-items:center;">
+  <image mode="widthFix" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/xhs1.jpg" style="width: 90%;"></image>
+</view>
+<text> \n </text>
+<view class="body">
+  👇 不容错过的重要通知和精彩内容
+</view>
+<view class="body">
+<navigator target = "miniProgram" short-link = "#小程序://小红书/wlk7qaMMEGI7MSG">
+  @<text bindtap="copy4" data-text="武大猫猫头" class="underline">武大猫猫头</text>
+</navigator>
+</view>
+<view style="display:flex; justify-content:center; align-items:center;">
+  <image mode="widthFix" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/xhs2.jpg" style="width: 90%;"></image>
+</view>
+<text> \n </text>
+<view class="body">
+  👇 待领养猫咪信息
+</view>
+<view class="body">
+<navigator target = "miniProgram" short-link = "#小程序://小红书/7zqY3BIVcET7Z1m">
+  @<text bindtap="copy5" data-text="珞珈山的猫" class="underline">珞珈山的猫</text>
+</navigator>
+</view>
+<view style="display:flex; justify-content:center; align-items:center;">
+  <image mode="widthFix" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/xhs3.jpg" style="width: 90%;"></image>
+</view>
+<text> \n </text>
+
+<!--<view class="head1">友情组织</view>
+<view class="body">
+武大医学部TNR分队；第一临床学院TNR分队；网络安全基地TNR分队。（为保护猫咪信息，各友情组织各自整理并制作本片区的猫咪档案，不收录进本小程序）
+</view>
+<text> \n </text>-->
+
+<!--<view class="staff">
+  源代码提供：circle
+</view>
+
+<view class="staff">
+  小程序开发：deltaG、xxd
+</view>
+
+<view class="staff">
+  信息收集：彤玉、挞盟盟主、装不下、洛樱、小爱心迷、璐璐、YY、胡巴戒、油麦菜大王、仪牧</view>
+
+<view class="staff">
+  猫咪资料统计：武大TNR小分队</view>-->
+
+<!--<view class="staff">
+  供图：
+</view>-->
+
+
+<view class="img-number-box" style="margin-top:40rpx;">
+  <image mode="widthFix"
+         src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/staff.jpg"
+         class="img"/>
+</view>
+
+<text> \n </text>
+
+<view class="itemname1" style='margin-right:20rpx;'>
+  <view bindtap="naviToMini" style='flex-shrink:0; box-sizing:border-box; width:90rpx; margin-right:20rpx;'>
+    <image style="width:90rpx;height:90rpx;" src="/pages/images/circle.png"></image>
+    <view style="text-align: center;  color:#353535;"> \n 高校动保索引 </view>
+  </view>
+  <!-- <view bindtap="naviToMini1" style='flex-shrink:0; box-sizing:border-box; width:90rpx; margin-right:20rpx;'>
+    <image style="width:90rpx;height:90rpx;" src="/pages/images/circle.png"></image>
+    <view style="text-align: center;  color:#353535;"> \n 其它小程序 </view>
+  </view> -->
+</view>
+
+<text> \n </text>

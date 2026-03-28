@@ -1,0 +1,89 @@
+<!-- 学部小选项栏 -->
+<view class="sub-navbar">
+  <text wx:for="{{subDepartments}}"
+        data-idx="{{index}}"
+        wx:key="subtab"
+        bindtap="subNavbarTap"
+        class="sub-item {{currentSubTab==index ? 'active' : ''}}">
+    {{item}}
+  </text>
+</view>
+<navigator block wx:for="{{cat}}" wx:key="_id" url="/pages/catDetail/catDetail?_id={{item._id}}">
+  <view bindlongpress='editCat' data-_id="{{item._id}}" class="catitem">
+    <image lazy-load='true' class='avator' src="{{url}}{{item.name}}.png" mode='aspectFill'></image>
+    <view class="cat-name">{{item.name}}</view>
+    <view class="adoption">{{item.isAdoption}}</view>
+  </view>
+  <view class="divLine"></view>
+</navigator>
+
+ <!-- 回到顶部按钮 -->
+ <view class="back-to-top" wx:if="{{showBackToTop}}" bindtap="scrollToTop">
+  <image class="back-icon" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/back-to-top.png" />
+</view>
+
+<!-- 猫爪按钮 -->
+<view class="paw-button"
+      bindtap="toggleFeedingNotice">
+  <image class="paw-icon"
+    src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/catpaw.png" />
+</view>
+
+
+
+<!-- 投喂须知弹窗 -->
+<view class="modal-mask" wx:if="{{showFeedingModal}}" bindtap="closeFeedingModal">
+  <view class="modal-content" catchtap>
+    <view class="modal-title">温馨提示</view>
+
+    <view class="modal-body">
+      <text>·请不要给猫咪投喂</text>
+
+      <text class="highlight underline">火腿肠</text>
+      <text class="highlight">、剩饭、骨头、鱼刺、牛奶、奶茶</text>
+      <text>等人类食物，以及</text>
+
+      <text class="highlight underline">猫条</text>
+      <text class="highlight">、零食罐头、三无冻干</text>
+      <text>等零食类宠物食品。</text>
+    </view>
+
+    <view class="modal-body">
+      <text>·</text>
+      <text class="highlight">如果遇到任何紧急情况，请通过微信、社群和小红书尽快联系我们。</text>
+    </view>
+
+    <view class="modal-body">
+      <text>·本小程序所展示的图片均为用户投稿或授权内容，版权归原作者所有。如有署名错误或侵权情况，请权利人与我们联系，我们将在核实后及时处理。</text>
+    </view>
+
+    <view class="modal-body">
+      <text>·如果您有任何关于猫咪的信息，都可以通过首页下方链接向我们提供！</text>
+    </view>
+  </view>
+</view>
+
+<!-- 筛选按钮 + 气泡提示 -->
+<view class="filter-container">
+  <view class="filter-bubble" wx:if="{{showBubble}}">点击筛选出没地点</view>
+  <view class="filter-btn" bindtap="openLocationFilter">
+    <image class="back-icon1" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/filter-btn.png" />
+  </view>
+</view>
+
+<!-- Location 筛选弹窗 -->
+<view class="modal-mask1" wx:if="{{showLocationFilter}}" bindtap="closeLocationFilter">
+  <view class="location-modal" catchtap>
+    <view class="modal-title1">选择位置</view>
+    <view class="location-list">
+      <view 
+        wx:for="{{locationOptions}}" 
+        wx:key="*this"
+        class="location-item {{selectedLocation === (item === '全部' ? '' : item) ? 'active' : ''}}"
+        data-loc="{{item}}"
+        bindtap="selectLocation">
+        {{item}}
+      </view>
+    </view>
+  </view>
+</view>
