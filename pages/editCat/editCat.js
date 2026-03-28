@@ -616,29 +616,47 @@ Page({
 
   // 删除某张附加图
   deleteAdditionalImage(e) {
-    const indexToDelete = e.currentTarget.dataset.index;
+    const indexToDelete = Number(e.currentTarget.dataset.index);
     const { cat } = this.data;
+    const currentCount = parseInt(cat.addPhotoNumber, 10) || 0;
+
+    if (!cat.name?.trim() || !currentCount || indexToDelete < 1 || indexToDelete > currentCount) {
+      wx.showToast({ title: '当前图片数量异常，请刷新后重试', icon: 'none' });
+      return;
+    }
 
     wx.showModal({
       title: '确认删除',
       content: `确定要删除 ${cat.name}${indexToDelete}.jpg 吗？`,
       success: (res) => {
         if (res.confirm) {
-          const fileName = `${cat.name}${indexToDelete}.jpg`;
-          
-          app.mpServerless.function.invoke('deleteImage', { fileName })
-            .then(response => {
-              if (response?.success) {
-                wx.showToast({ title: '删除成功', icon: 'success' });
-                this.setData({ imageUpdateKey: Date.now() }); // 刷新图片
-              } else {
-                throw new Error('删除失败');
-              }
-            })
-            .catch(err => {
-              console.error('删除失败:', err);
-              wx.showToast({ title: '删除失败', icon: 'error' });
+          wx.showLoading({ title: '删除中...' });
+          app.mpServerless.function.invoke('deleteImage', {
+            catName: cat.name.trim(),
+            indexToDelete,
+            currentCount
+          }).then(response => {
+            wx.hideLoading();
+            if (!response?.success) {
+              throw new Error('云函数调用失败');
+            }
+
+            const result = response.result || {};
+            if (!result.success) {
+              throw new Error(result.error || result.message || '删除失败');
+            }
+
+            const newCount = Number.isInteger(result.newCount) ? result.newCount : (currentCount - 1);
+            this.setData({
+              ['cat.addPhotoNumber']: Math.max(0, newCount).toString(),
+              imageUpdateKey: Date.now()
             });
+            wx.showToast({ title: '删除成功', icon: 'success' });
+          }).catch(err => {
+            wx.hideLoading();
+            console.error('删除失败:', err);
+            wx.showToast({ title: err.message || '删除失败', icon: 'none' });
+          });
         }
       }
     });
