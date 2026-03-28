@@ -686,10 +686,12 @@ Page({
             if (!result.success) {
               throw new Error(result.error || result.message || '删除失败');
             }
+            if (!Number.isInteger(result.newCount)) {
+              throw new Error('云函数未完成重排，请先部署 deleteImage 最新版本');
+            }
 
-            const newCount = Number.isInteger(result.newCount) ? result.newCount : (currentCount - 1);
             this.setData({
-              ['cat.addPhotoNumber']: Math.max(0, newCount).toString(),
+              ['cat.addPhotoNumber']: Math.max(0, result.newCount).toString(),
               imageUpdateKey: Date.now()
             });
             wx.showToast({ title: '删除成功', icon: 'success' });

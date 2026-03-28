@@ -105,8 +105,50 @@ module.exports = async (ctx) => {
     console.log('【deleteImage 开始执行】收到参数:', !!ctx.args);
     const { fileName, catName, indexToDelete, currentCount } = ctx.args || {};
     const warnings = [];
+    const deleteIndex = Number(indexToDelete);
+    const totalCount = Number(currentCount);
 
-    // 1) 兼容旧调用：直接按 fileName 删除
+    // 1) 新调用优先：删除附加图并自动重排，如 name2.jpg 删除后，name3.jpg -> name2.jpg
+    const canReindex =
+      isSafeCatName(catName) &&
+      Number.isInteger(deleteIndex) &&
+      Number.isInteger(totalCount) &&
+      deleteIndex >= 1 &&
+      totalCount >= 1 &&
+      deleteIndex <= totalCount;
+
+    if (canReindex) {
+      const selectedKey = `picture/${catName}${deleteIndex}.jpg`;
+      console.log('【删除指定图】', selectedKey);
+      const selectedDeleted = await deleteObjectSafe(selectedKey);
+      if (selectedDeleted.skipped) {
+        warnings.push(`Selected file not found: ${selectedKey}`);
+      }
+
+      // 把后续图片整体前移并删除原图，保证编号连续
+      for (let i = deleteIndex + 1; i <= totalCount; i++) {
+        const sourceKey = `picture/${catName}${i}.jpg`;
+        const targetKey = `picture/${catName}${i - 1}.jpg`;
+        console.log(`【重排复制】${sourceKey} -> ${targetKey}`);
+        const copied = await copyObjectSafe({ sourceKey, targetKey });
+        if (copied.skipped) {
+          warnings.push(`Missing source file: ${sourceKey}`);
+          continue;
+        }
+        const sourceDeleted = await deleteObjectSafe(sourceKey);
+        if (sourceDeleted.skipped) {
+          warnings.push(`Source already removed: ${sourceKey}`);
+        }
+      }
+
+      return {
+        success: true,
+        newCount: totalCount - 1,
+        warnings
+      };
+    }
+
+    // 2) 兼容旧调用：仅按 fileName 删除（不重排）
     if (fileName) {
       if (!isSafeFileName(fileName)) {
         console.log('【错误】非法文件名:', fileName);
@@ -114,63 +156,19 @@ module.exports = async (ctx) => {
       }
 
       const key = `picture/${fileName}`;
-      console.log('【准备删除】Key:', key);
+      console.log('【准备删除（旧模式）】Key:', key);
       const deleted = await deleteObjectSafe(key);
       if (deleted.skipped) {
         warnings.push('File not found, skip delete');
       } else {
-        console.log('【删除成功】', key);
+        console.log('【删除成功（旧模式）】', key);
       }
       return { success: true, warnings };
     }
 
-    // 2) 新调用：删除附加图并自动重排，如 name2.jpg 删除后，name3.jpg -> name2.jpg
-    if (!isSafeCatName(catName)) {
-      console.log('【错误】非法 catName:', catName);
-      return { success: false, error: 'Invalid catName' };
-    }
-
-    const deleteIndex = Number(indexToDelete);
-    const totalCount = Number(currentCount);
-
-    if (
-      !Number.isInteger(deleteIndex) ||
-      !Number.isInteger(totalCount) ||
-      deleteIndex < 1 ||
-      totalCount < 1 ||
-      deleteIndex > totalCount
-    ) {
-      return { success: false, error: 'Invalid indexToDelete/currentCount' };
-    }
-
-    // 先确保用户指定删除的那张一定被删除，避免“只改编号不删图”
-    const selectedKey = `picture/${catName}${deleteIndex}.jpg`;
-    console.log('【删除指定图】', selectedKey);
-    const selectedDeleted = await deleteObjectSafe(selectedKey);
-    if (selectedDeleted.skipped) {
-      warnings.push(`Selected file not found: ${selectedKey}`);
-    }
-
-    // 再把后面的图前移，并删除原 source，避免残留重复图
-    for (let i = deleteIndex + 1; i <= totalCount; i++) {
-      const sourceKey = `picture/${catName}${i}.jpg`;
-      const targetKey = `picture/${catName}${i - 1}.jpg`;
-      console.log(`【重排复制】${sourceKey} -> ${targetKey}`);
-      const copied = await copyObjectSafe({ sourceKey, targetKey });
-      if (copied.skipped) {
-        warnings.push(`Missing source file: ${sourceKey}`);
-        continue;
-      }
-      const sourceDeleted = await deleteObjectSafe(sourceKey);
-      if (sourceDeleted.skipped) {
-        warnings.push(`Source already removed: ${sourceKey}`);
-      }
-    }
-
     return {
-      success: true,
-      newCount: totalCount - 1,
-      warnings
+      success: false,
+      error: 'Missing required parameters'
     };
 
   } catch (err) {
