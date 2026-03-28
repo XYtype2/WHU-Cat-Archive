@@ -554,8 +554,11 @@ Page({
       success: (res) => {
         if (res.confirm) {
           wx.showLoading({ title: '删除中...' });
+          const catName = cat.name.trim();
+          const fileName = `${catName}${indexToDelete}.jpg`;
           app.mpServerless.function.invoke('deleteImage', {
-            catName: cat.name.trim(),
+            fileName,
+            catName,
             indexToDelete,
             currentCount
           }).then(response => {
