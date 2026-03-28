@@ -1,0 +1,10 @@
+{
+  "name": "deleteImage",
+  "version": "1.0.0",
+  "description": "Delete and reorder cat images in Tencent COS",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "cos-nodejs-sdk-v5": "^2.11.0"
+  }
+}
