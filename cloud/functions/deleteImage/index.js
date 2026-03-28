@@ -11,6 +11,10 @@ const cos = new COS({
   SecretKey: SECRET_KEY
 });
 
+function buildFileUrl(fileName) {
+  return `https://${BUCKET}.cos.${REGION}.myqcloud.com/picture/${encodeURIComponent(fileName)}`;
+}
+
 function isSafeFileName(fileName) {
   if (typeof fileName !== 'string' || !fileName) return false;
   if (fileName.length > 120) return false;
@@ -95,18 +99,31 @@ async function copyObjectSafe({ sourceKey, targetKey }) {
 
 module.exports = async (ctx) => {
   try {
-    if (!SECRET_ID || !SECRET_KEY) {
-      return {
-        success: false,
-        error: 'Missing COS secrets in environment variables'
-      };
-    }
-
     console.log('【deleteImage 开始执行】收到参数:', !!ctx.args);
     const { fileName, catName, indexToDelete, currentCount } = ctx.args || {};
     const warnings = [];
     const deleteIndex = Number(indexToDelete);
     const totalCount = Number(currentCount);
+
+    // 无 COS 密钥时，至少支持“按 fileName 删除单图”（用于客户端兜底后的尾图清理）
+    if (!SECRET_ID || !SECRET_KEY) {
+      if (fileName) {
+        if (!isSafeFileName(fileName)) {
+          return { success: false, error: 'Invalid file name' };
+        }
+        const fileApi = ctx && ctx.mpserverless && ctx.mpserverless.file;
+        if (!fileApi || typeof fileApi.deleteFile !== 'function') {
+          return { success: false, error: 'Missing COS secrets in environment variables' };
+        }
+        const filePathUrl = buildFileUrl(fileName);
+        await fileApi.deleteFile(filePathUrl);
+        return { success: true, warnings: ['Deleted via ctx.mpserverless.file.deleteFile'] };
+      }
+      return {
+        success: false,
+        error: 'Missing COS secrets in environment variables'
+      };
+    }
 
     // 1) 新调用优先：删除附加图并自动重排，如 name2.jpg 删除后，name3.jpg -> name2.jpg
     const canReindex =

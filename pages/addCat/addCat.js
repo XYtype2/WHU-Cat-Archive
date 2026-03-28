@@ -333,6 +333,14 @@ Page({
     }
   },
 
+  async cleanupTailFileAfterFallback(catName, currentCount) {
+    const tailFileName = `${catName}${currentCount}.jpg`;
+    const response = await app.mpServerless.function.invoke('deleteImage', { fileName: tailFileName });
+    if (!response?.success) return false;
+    const result = response.result || {};
+    return !!result.success;
+  },
+
   uploadMainImage() {
     this.uploadJpgImage('main');
   },
@@ -610,11 +618,16 @@ Page({
             // 兜底路径：deleteImage 缺少密钥时，改用 uploadImage 重排，保证功能可用
             if (errorMsg.includes('Missing COS secrets')) {
               await this.reindexAdditionalImagesByUpload(catName, indexToDelete, currentCount);
+              const cleaned = await this.cleanupTailFileAfterFallback(catName, currentCount);
               this.setData({
                 ['cat.addPhotoNumber']: Math.max(0, currentCount - 1).toString(),
                 imageUpdateKey: Date.now()
               });
               wx.hideLoading();
+              if (!cleaned) {
+                wx.showToast({ title: '已重排，尾图清理失败', icon: 'none' });
+                return;
+              }
               wx.showToast({ title: '删除成功', icon: 'success' });
               return;
             }
