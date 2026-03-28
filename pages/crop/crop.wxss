@@ -1,0 +1,63 @@
+.page {
+  min-height: 100vh;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40rpx;
+  box-sizing: border-box;
+}
+
+.hint {
+  color: #ddd;
+  font-size: 26rpx;
+  margin-bottom: 30rpx;
+}
+
+.crop-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16rpx;
+  background: #222;
+}
+
+.movable-area {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+}
+
+.movable-view {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.mask-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 48%, rgba(0, 0, 0, 0.55) 49%);
+}
+
+.circle-frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 96%;
+  height: 96%;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.confirm-btn {
+  width: 76%;
+  margin-top: 36rpx;
+}

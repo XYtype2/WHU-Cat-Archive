@@ -1,0 +1,160 @@
+<!-- <view class="info-block">
+  长期征集：每只猫更早的目击时间；更准确的出生时间；罕见猫的高清正面照片；已标记为失踪猫的目击情报等一切您认为能更新在猫猫档案中的信息。您的宝贵信息可能是这只小猫一生唯一的记录。
+  <view class="line-space"></view>
+  有关信息更新：小程序更新略有延迟，对于校内教学区绝大部分新猫情报我们都有掌握，会在猫咪行踪稳定时尽早更新。而居民区散养遗弃现象丛生，且居民对猫咪绝育理念不一致，想要完全管理难度极高甚至不现实，故只会更新一部分常见的靠近教学区的已绝育猫。
+</view>
+
+
+<view class="container">
+  <view class="title">填写流浪猫信息</view>
+  
+  <view class="tip">请通过以下任一方式打开表单：</view>
+
+  <view class="qr-section">
+    <text class="qr-label">方式一：扫码填写</text>
+    <image 
+      mode="widthFix" 
+      src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/form_qr1.jpg"
+      class="cat-image"
+      bindtap='previewImage'
+      style="width: 60%;"
+    />
+    <view class="qr-desc">点击长按识别小程序码，跳转腾讯文档填写</view>
+  </view>
+
+  <view class="link-section">
+    <text class="link-label">方式二：复制链接</text>
+    <view class="url-box" bindtap="copyUrl">
+      {{formUrl}}
+    </view>
+    <view class="qr-desc">如无法跳转，请复制链接在网页打开</view>
+  </view>
+
+  <view class="footer-tip">
+    表单提交后，我们会尽快核实并更新猫咪状态，感谢您的帮助！
+  </view>
+</view> -->
+
+
+<!-- 根容器 -->
+<view class="page-root" style="height: 100vh; overflow: hidden;">
+
+<!-- 状态1：加载中 -->
+<block wx:if="{{loading}}">
+  <view class="loading" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <text>校验权限中...</text>
+  </view>
+</block>
+
+<!-- 状态2：有权限 → 显示地图 -->
+<block wx:elif="{{hasAccess && !loading}}">
+  <view class="container" style="height: 100%;">
+    <!-- 搜索框 -->
+    <view class="search-bar">
+      <input
+        class="search-input"
+        placeholder="输入猫名搜索..."
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        confirm-type="search"
+        bindconfirm="onSearchConfirm"
+      />
+      <button wx:if="{{searchKeyword}}" class="clear-btn" bindtap="clearSearch">✕</button>
+      <button 
+        class="locate-btn1" 
+        bindtap="toggleLocateMode"
+        style="margin-left: 20rpx; font-size: 24rpx;"
+      >
+        {{ isLocateMode ? '取消' : '编辑' }}
+      </button>
+    </view>
+
+    <!-- 中心点切换按钮 -->
+    <view class="center-switch">
+      <view class="switch-item" data-lat="30.536708" data-lng="114.365808" bindtap="switchCenter">校本部</view>
+      <view class="switch-item" data-lat="30.554082" data-lng="114.353923" bindtap="switchCenter">医学部</view>
+      <view class="switch-item" data-lat="30.673885" data-lng="114.13491"  bindtap="switchCenter">网安基地</view>
+      <view class="switch-item" data-lat="30.535745" data-lng="114.294476" bindtap="switchCenter">一临</view>
+    </view>
+
+    <!-- 地图 -->
+    <map
+      id="map"
+      style="width: 100%; height: calc(100% - 180rpx);"
+      latitude="{{center.latitude}}"
+      longitude="{{center.longitude}}"
+      scale="{{scale}}"
+      markers="{{markers}}"
+      bindmarkertap="onMarkerTap"
+      bindtap="onMapClick"
+      show-location="{{true}}"
+    ></map>
+
+    <view
+      wx:if="{{hasAccess && !loading}}"
+      class="locate-btn"
+      bindtap="moveToUserLocation"
+    >
+      <image src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/map.jpeg" class="locate-icon" />
+    </view>
+  </view>
+</block>
+
+<!-- 状态3：无权限 + 显示申请表单 -->
+<block wx:elif="{{!hasAccess && showApplyForm && !loading}}">
+  <view class="no-access-container" style="height: 100%;">
+    <!-- 顶部提示 -->
+    <view class="no-access-title">暂无地图访问权限</view>
+    
+    <!-- 申请卡片 -->
+    <view class="apply-card">
+      <view class="apply-card-title">申请访问权限</view>
+      <view class="apply-card-desc">请输入您的真实姓名或常用昵称，管理员审核后将为您开通权限。</view>
+      
+      <input 
+        class="apply-input"
+        placeholder=""
+        value="{{applyNickname}}"
+        bindinput="onNicknameInput"
+      />
+
+      <button 
+        class="apply-btn" 
+        bindtap="submitApply"
+        disabled="{{isApplyBtnDisabled}}"
+      >
+        提交申请
+      </button>
+    </view>
+  </view>
+</block>
+
+<!-- 状态4（可选兜底）：比如未登录、无 openid 等 -->
+<block wx:else>
+  <view class="error-tip" style="height: 100%;">无法获取用户信息，请重试</view>
+</block>
+
+</view>
+
+<!-- 自定义猫选择弹窗 -->
+<view class="modal-mask" wx:if="{{showCatSelectModal}}" bindtap="hideCatSelectModal">
+  <view class="modal-content" catchtap>
+    <view class="modal-title">选择要定位的猫</view>
+    <scroll-view scroll-y class="cat-list">
+      <view 
+        wx:for="{{candidateCats}}" 
+        wx:key="_id"
+        class="cat-option"
+        bindtap="selectCatForLocate"
+        data-cat="{{item}}"
+      >
+        <view class="modal-title1">{{item.name}}</view> 
+      </view>
+    </scroll-view>
+    <button class="modal-cancel-btn" bindtap="hideCatSelectModal">取消</button>
+  </view>
+</view>
+
+<view wx:if="{{isLocateMode}}" class="locate-mode-tip">
+  当前处于猫咪位置编辑模式
+</view>

@@ -1,0 +1,237 @@
+  <!-- 扭蛋机面板 -->
+  <view wx:if="{{currentTab === 'gacha'}}" class="gacha-panel">
+    <!-- 背景图 -->
+    <image 
+      src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/gashapon.jpg" 
+      class="gacha-bg"
+      mode="aspectFit"
+    />
+
+    <!-- 标题 -->
+    <!-- <view class="header-overlay">
+      <text class="title">扭蛋机</text>
+      <text class="subtitle">答对题目才能扭蛋哦！</text>
+    </view> -->
+
+    <!-- 红色圆形扭蛋按钮 -->
+    <view class="gacha-circle-btn" bindtap="handleGachaTap">
+      <text class="circle-btn-text">扭蛋</text>
+    </view>
+
+    <!-- 底部提示 -->
+    <view class="footer-tip-overlay">
+      点击扭蛋，每次答对题目就能获得一个随机礼物！
+    </view>
+  </view>
+
+<view class="container">
+
+<!-- 背包面板 -->
+<view wx:if="{{currentTab === 'backpack'}}" class="backpack-panel">
+  <!-- 礼物 -->
+  <view class="section-title">我的礼物</view>
+  <view class="badges-grid">
+    <block wx:for="{{badgesPool}}" wx:key="badgeId">
+      <view class="badge-item {{(userBadgeCounts[item.badgeId] || 0) > 0 ? 'owned' : 'not-owned'}}">
+        <image 
+          src="{{item.icon || 'https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/catpaw.png'}}" 
+          class="badge-icon"
+          mode="aspectFit"
+        />
+        <text class="badge-name">{{item.name || '未知徽章'}}</text>
+        <view wx:if="{{(userBadgeCounts[item.badgeId] || 0) > 0}}" class="badge-count">
+          ×{{userBadgeCounts[item.badgeId]}}
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 卡片 -->
+<view class="section-title" style="margin-top: 60rpx;">我的卡片</view>
+<view class="cards-grid">
+  <block wx:for="{{backpackDisplayCards}}" wx:key="cardId">
+    <view 
+      class="card-item {{(userCardCounts[item.cardId] || 0) > 0 ? 'owned' : 'not-owned'}}"
+      bindtap="{{(userCardCounts[item.cardId] || 0) > 0 ? 'showCardDetail' : 'onNotOwnedCardTap'}}"
+      data-card="{{item}}"
+    >
+      <view class="card-image-container">
+        <image 
+          src="{{(userCardCounts[item.cardId] || 0) > 0 ? (item.image || 'https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/default_card.jpg') : 'https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/default_card.jpg'}}"
+          class="card-image"
+          mode="aspectFit"
+        />
+      </view>
+      <text class="card-name">{{item.name || '神秘卡片'}}</text>
+      
+      <view wx:if="{{(userCardCounts[item.cardId] || 0) > 0}}" class="card-count">
+        ×{{userCardCounts[item.cardId]}}
+      </view>
+    </view>
+  </block>
+</view>
+</view>
+
+  <!-- 底部 Tab 切换栏 -->
+  <view class="tab-bar">
+    <view 
+      class="tab-item {{currentTab === 'gacha' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="gacha"
+    >
+      扭蛋机
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'backpack' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="backpack"
+    >
+      背包
+    </view>
+  </view>
+
+<!-- 答题弹窗 -->
+<view wx:if="{{quizVisible}}" 
+  style="position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; justify-content: center; align-items: center;" 
+  catchtap
+>
+  <view style="background: white; width: 80%; padding: 40rpx; border-radius: 20rpx;" catchtap>
+
+    <!-- 题目 -->
+    <view style="font-size: 32rpx; font-weight: bold; margin-bottom: 30rpx; line-height: 1.5;">
+      {{currentQuestion.question}}
+    </view>
+
+    <!-- 选项（灰底圆角长方形） -->
+    <view wx:if="{{!showResult}}" wx:for="{{currentQuestion.options}}" wx:key="index" style="margin-bottom: 20rpx;">
+      <button 
+        size="mini"
+        class="option-btn"
+        style="width: 100%; background: {{selectedOptionIndex === index ? '#d9d9d9' : '#f5f5f5'}}; color: {{selectedOptionIndex === index ? '#000' : '#333'}}; border: none; border-radius: 12rpx; text-align: left; padding: 20rpx;font-size: 28rpx; "
+        data-index="{{index}}"
+        bindtap="selectOption"
+      >
+        {{item}}
+      </button>
+    </view>
+
+    <!-- 答题结果显示区（提交后显示） -->
+    <view wx:if="{{showResult}}" style="margin-bottom: 30rpx;">
+      <view style="font-size: 32rpx; font-weight: bold; color: {{isCorrect ? '#52c41a' : '#ff4d4f'}}; margin-bottom: 20rpx;">
+        {{isCorrect ? '答对了！' : '答错了，再试一次吧！'}}
+      </view>
+
+      <!-- 显示正确答案（如果答错） -->
+      <view wx:if="{{!isCorrect}}" style="margin-bottom: 20rpx; font-size: 28rpx; color: #666;">
+        正确答案：{{currentQuestion.options[currentQuestion.correctIndex]}}
+      </view>
+
+      <!-- 显示解析（如果有） -->
+      <view wx:if="{{currentQuestion.explanation}}" style="font-size: 28rpx; color: #595959; line-height: 1.5;">
+        解析：{{currentQuestion.explanation}}
+      </view>
+    </view>
+
+    <!-- 按钮区 -->
+    <view wx:if="{{!showResult}}">
+      <!-- 提交按钮（红色） -->
+      <button 
+        type="default" 
+        style="width: 100%; background: #cf1e1e; color: white; border: none; border-radius: 36rpx;font-weight: bold;"
+        bindtap="submitAnswer"
+        disabled="{{selectedOptionIndex === -1 || submitting}}"
+      >
+        {{submitting ? '提交中...' : '提交答案'}}
+      </button>
+    </view>
+
+    <view wx:if="{{showResult}}">
+      <!-- 答完后：关闭 or 再抽一题 -->
+      <button 
+        type="primary" 
+        style="width: 100%; background: #cf1e1e; border: none; border-radius: 36rpx;font-weight: bold;"
+        bindtap="closeQuizAndGacha"
+      >
+        {{isCorrect ? '领取礼物' : '再试一次'}}
+      </button>
+    </view>
+
+  </view>
+</view>
+
+
+<!-- 抽卡动画弹窗（支持白底礼物卡片） -->
+<view 
+  wx:if="{{gachaAnimating}}" 
+  style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column;"
+  bindtap="closeGachaAnimation"
+>
+  <view class="laser-burst"></view>
+
+  <!-- 卡片容器（固定 3:4 比例） -->
+  <view class="gacha-card {{gachaAnimating ? 'animate-in' : ''}}" style="width: 500rpx; height: 666rpx; position: relative;">
+    
+    <!-- 情况1：抽到真实卡片 -->
+    <block wx:if="{{gachaResultCard}}">
+      <image 
+        src="{{gachaCardImage}}"
+        style="width: 100%; height: 100%; border-radius: 20rpx;"
+        mode="aspectFill"
+      />
+    </block>
+
+    <!-- 情况2：仅获得礼物（白底 + 徽章图标） -->
+    <block wx:else>
+      <!-- 白底 -->
+      <view style="width: 100%; height: 100%; background: white; border-radius: 20rpx; display: flex; justify-content: center; align-items: center;">
+        <!-- 徽章图标：不缩放，限制最大尺寸，居中 -->
+        <image 
+          src="{{gachaResultBadge && gachaResultBadge.icon ? gachaResultBadge.icon : 'https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/default_badge.jpg'}}"
+          style="width: 400rpx; height: 400rpx;"
+          mode="scaleToFill"
+        />
+      </view>
+    </block>
+  </view>
+
+  <!-- 主文案（获得XX / 卡片文案） -->
+  <!-- <view class="gacha-text-effect" style="margin-top: 60rpx;">
+    {{gachaEffectText}}
+  </view> -->
+  <view class="gacha-text-effect" style="white-space: pre-line;">
+  {{gachaEffectText}}</view>
+  <!-- 仅在抽到卡片时显示“送你一个...” -->
+  <view 
+    wx:if="{{showGiftHint}}" 
+    style="font-size: 36rpx; color: white; margin-top: 30rpx; opacity: 0.9;"
+  >
+    并送了你一个 {{gachaResultBadge ? gachaResultBadge.name : '神秘徽章'}}
+  </view>
+</view>
+</view>
+
+<!-- 卡片详情弹窗 -->
+<view wx:if="{{showCardDetailModal}}" class="card-detail-modal" bindtap="closeCardDetail">
+  <!-- 遮罩 -->
+  <view class="modal-mask"></view>
+  
+  <!-- 内容区 -->
+  <view class="modal-content" catchtap>
+    <!-- 大图（3:4） -->
+    <view class="modal-card-image-container">
+      <image 
+        src="{{selectedCard.image || 'https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/default_card.jpg'}}" 
+        class="modal-card-image"
+        mode="aspectFit"
+      />
+    </view>
+    
+    <!-- 文案 -->
+    <view wx:if="{{selectedCard.text}}" class="modal-card-text" style="white-space: pre-line;">
+      {{selectedCard.text}}
+    </view>
+
+    <!-- 关闭按钮 -->
+    <button class="close-btn" bindtap="closeCardDetail">✕</button>
+  </view>
+</view>

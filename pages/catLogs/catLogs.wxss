@@ -1,0 +1,144 @@
+/* pages/catLogs/catLogs.wxss */
+
+/* 轮播容器 */
+.banner-swiper {
+  width: 100%;
+  height: 323rpx;
+  margin-bottom: 20rpx;
+  border-radius: 16rpx;
+  overflow: hidden; /* 可选：隐藏超出圆角的部分 */
+}
+
+/* 比例容器：551 / 1280 ≈ 43.05% */
+.img-aspect {
+  width: 100%;
+  padding-top: 43.05%;
+  position: relative;
+  background-color: #f5f5f5;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.15);
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+/* 覆盖在 padding 区域内的图片 */
+.banner-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.container {
+  padding: 20rpx;
+  background: white;
+}
+
+.log-item {
+  display: flex;
+  background: white;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 10rpx 10rpx rgba(0,0,0,0.05);
+}
+
+.log-cover {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-right: 20rpx;
+}
+
+.log-cover image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.log-content {
+  flex: 1;
+}
+
+.log-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.log-summary {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.tag {
+  background: rgba(255, 251, 193, 0.863);
+  color: #ffd900e7;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+  margin-top: 100rpx;
+}
+
+.fab {
+  position: fixed;
+  bottom: 80rpx;
+  right: 40rpx;
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background: rgb(236, 236, 236);
+  color: white;
+  font-size: 48rpx;
+  border-radius: 50%;
+  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.2);
+  font-weight: bold;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.navbar .item {
+  position: relative;
+  flex: auto;
+  text-align: center;
+  line-height: 80rpx;
+  color: #888;
+  font-size: 32rpx;
+}
+
+.navbar .item.active {
+  color: #cf1e1e;
+}
+
+.navbar .item.active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 10rpx;
+  left: 40rpx;
+  right: 40rpx;
+  height: 4rpx;
+  background: #cf1e1e;
+}

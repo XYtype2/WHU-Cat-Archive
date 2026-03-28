@@ -1,0 +1,9 @@
+{
+  "name": "uploadImage",
+  "version": "1.0.0",
+  "description": "Upload image to Tencent COS",
+  "main": "index.js",
+  "dependencies": {
+    "cos-nodejs-sdk-v5": "^2.11.0"
+  }
+}

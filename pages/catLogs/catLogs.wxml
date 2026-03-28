@@ -1,0 +1,80 @@
+<!--pages/catLogs/catLogs.wxml-->
+<view class="container">
+  <swiper
+    class="banner-swiper"
+    indicator-dots="{{true}}"
+    autoplay="{{true}}"
+    interval="10000"
+    duration="800"
+    circular="{{true}}"
+  >
+    <block wx:for="{{bannerImages}}" wx:key="index">
+      <swiper-item>
+        <view class="img-aspect">
+          <image 
+            src="{{item}}" 
+            mode="aspectFill"
+            class="banner-img"
+          />
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="navbar">
+    <view 
+      class="item {{selectedFilter === 'all' ? 'active' : ''}}" 
+      bindtap="setFilter" 
+      data-filter="all"
+    >全部</view>
+    <view 
+      class="item {{selectedFilter === '绝育' ? 'active' : ''}}" 
+      bindtap="setFilter" 
+      data-filter="绝育"
+    >绝育</view>
+    <view 
+      class="item {{selectedFilter === '救助' ? 'active' : ''}}" 
+      bindtap="setFilter" 
+      data-filter="救助"
+    >救助</view>
+    <view 
+      class="item {{selectedFilter === '其它' ? 'active' : ''}}" 
+      bindtap="setFilter" 
+      data-filter="其它"
+    >其它</view>
+  </view>
+  <block wx:for="{{filteredLogs}}" wx:key="_id">
+    <view 
+      class="log-item" 
+      bindtap="viewLog" 
+      bindlongpress="onLongPress"
+      data-id="{{item._id}}"
+     style="height: 232rpx; display: flex; box-sizing: border-box; position: relative; left: 0rpx; top: 20rpx">
+
+      <view class="log-content">
+        <text class="log-title">{{item.title}}</text>
+        <text class="log-summary">{{item.summary}}</text>
+
+        <view class="tags">
+          <block wx:for="{{item.tags || []}}" wx:key="index">
+            <text class="tag">#{{item}}</text>
+          </block>
+        </view>
+      </view>
+
+      <!-- 封面图 -->
+      <view class="log-cover">
+        <image 
+          src="{{urlPrefix}}{{item._id}}.jpg" 
+          mode="aspectFill"
+          catcherror="onImageError"
+        />
+      </view>
+
+    </view>
+  </block>
+
+  <view wx:if="{{logs.length === 0}}" class="empty">暂无日志</view>
+
+  <!-- 加号始终显示 -->
+  <view class="fab" bindtap="createLog">＋</view>
+</view>

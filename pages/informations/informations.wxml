@@ -1,0 +1,166 @@
+<view class="page">
+  <view class="navbar">
+    <view 
+      class="item {{activeTab === 'feed' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="feed"
+    >投喂</view>
+    <view 
+      class="item {{activeTab === 'neuter' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="neuter"
+    >绝育</view>
+    <view 
+      class="item {{activeTab === 'adopt' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="adopt"
+    >领养</view>
+  </view>
+
+  <view class="content">
+
+    <!-- 投喂内容 -->
+<block wx:if="{{activeTab === 'feed'}}">
+  <view class="img-aspect">
+  <image 
+    mode="widthFix" 
+    src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/投喂.jpg"
+    class="img-content"
+  />
+</view>
+  <view class="section">
+    <view class="title">
+    <text class="forbid">禁止</text>投喂的食物
+    </view>
+    <view class="text">
+      <view>• 人类食物：<text class="bold">火腿肠</text>、剩饭、骨头、鱼刺、牛奶、奶茶等（盐分对猫来说过高伤肾；含乳糖易腹泻；骨头会划伤口腔）</view>
+      <view>• 零食类宠物食品：<text class="bold">猫条</text>、零食罐头、三无冻干等（添加剂多，易导致胰腺炎、口炎等疾病并使猫挑食，影响诱捕绝育和治疗）</view>
+    </view>
+  </view>
+
+  <view class="section">
+  <view class="title">
+    <text class="suggest">建议</text>投喂的食物
+  </view>
+
+  <view class="text">
+    <view>• 正规品牌猫粮、主食罐头、冻干</view>
+    <view>• 水煮鸡胸肉、虾（无盐无调料）</view>
+    <view>• 干净饮用水（对流浪猫来说比食物更稀缺）</view>
+  </view>
+</view>
+
+
+  <view class="section">
+    <view class="title">投喂注意事项</view> <!-- 默认黑色 -->
+    <view class="text">
+      <view>• 不要给肥胖的流浪猫过量投喂，以免诱发心脏病、肾病、糖尿病等问题。</view>
+      <view>• 请使用一次性碗、纸巾或树叶盛放，避免直接倒在地上（防止划伤口腔和污染环境）。</view>
+      <view>• 投喂后务必清理垃圾，不留下餐具或残食。</view>
+      <view>• 不要留下过量猫粮，夏天容易变质、招虫，甚至引发投毒风险。</view>
+      <view>• 禁止在宿舍楼、教学楼等建筑内部投喂。</view>
+      <view>• 发现未绝育的流浪猫，请联系我们登记。</view>
+    </view>
+  </view>
+</block>
+
+    <!-- 绝育内容 -->
+    <block wx:if="{{activeTab === 'neuter'}}">
+<view class="img-aspect">
+  <image 
+    mode="widthFix" 
+    src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/绝育.jpg"
+    class="img-content"
+  />
+</view>
+    <view class="guide-title">什么是TNR?</view>
+      <view class="text">
+        <view>T（trap抓捕）N（neuter绝育）R（return放归），是现在国际上比较主流、取代安乐死、相对人道及有效的可以合理减少社区流浪猫数量的办法。</view>
+        <view><text class="highlight">• 母猫绝育优先于公猫。</text></view>
+        <view><text class="highlight">• 绝育优先于投喂。</text></view>
+        <view>在我们系统地对武大流浪猫进行绝育之前，校园内流浪猫数量多且不断增长，几近泛滥之势。猫咪绝育率低，出生率高，死亡率也很高，生活质量差。</view>
+        <view>目前，经过我们的努力，武大核心区域（学生宿舍区、教学区）流浪猫绝育率无限趋近于100%，流浪猫数量得到了有效控制的同时，生活质量也得到了显著提升。</view>
+      </view>
+      <view class="divider"></view>
+      <view class="guide-title">为什么要TNR?</view>
+      <view class="text">
+        <view><text class="highlight">1.流浪猫源源不断且繁殖速度快，死亡率高</text></view>
+        <view>• 武汉大学校内食物充足，生态良好，再加上不断有人散养、遗弃猫咪，流浪猫数量众多且容易不断增加。在我们进行系统绝育之前，武大部分区域流浪猫已经形成泛滥之势。</view>
+        <view>• 无法杜绝随意投喂未绝育流浪猫的行为，使得流浪猫食物充足，发情概率、频率上升，提高了流浪猫繁殖的速度和数量。</view>
+      </view>
+      <view class="text">
+        <view><text class="highlight">2.流浪猫数量过多会扰民，可能激化邻里矛盾，引发更恶劣后果</text></view>
+        <view>• 校园中并不是所有人都喜欢猫咪，接受流浪猫共享人类的公共空间。</view>
+        <view>• 流浪猫发情期会在夜晚大声嚎叫，噪音扰民。尿液标记的情况更加频繁，影响环境卫生。</view>
+        <view>• 资源不均，因争夺领地而频繁打架冲突，猫咪容易受伤，打架噪音扰民。</view>
+        <view>• 如果放任流浪猫数量激增，矛盾一旦激化，极端个体、社区管理者（物业、后保部）可能会大面积扑杀猫咪，甚至发生更多悲剧。</view>
+      </view>
+      <view class="text">
+        <view><text class="highlight">3.流浪猫数量过多可能影响生态环境</text></view>
+        <view>• 家猫是人类驯化的动物，在自然界中并不存在，并不属于自然。如果数量过多，可能对野生动物如鸟类、野生猫科动物造成负面影响。</view>
+        <view>• 流浪猫源于人类遗弃、散养的家猫，是人类文明进步的副产品。人类创造了家猫和流浪猫，也理应为此负责。</view>
+      </view>
+      <view class="text">
+  <view>
+    <!--<text class="highlight">特别：有关居民区的猫</text>
+  </view>
+  <view>
+    • 武大居民区占地面积大，人口众多，居民素质参差不齐，普遍存在散养猫不绝育、随意弃养，甚至毒杀等行为。在居民区内，小分队的绝育救助工作难以开展，常遭遇各种阻碍。
+由于不绝育散养行为持续存在，即使小分队全力进行绝育，也难以有效控制流浪猫数量，无法实现 TNR 的初衷。因此，小分队已经在条件允许时对居民区边缘和内部的猫进行适量绝育，但不会推进百分百绝育。
+此外，小分队的资金主要来源于关心宿舍区和教学区猫咪的在校学生及已毕业校友，因此不会动用资金为居民区的猫提供疾病筹款和救治。但如有人愿意承担全部绝育或救治费用，小分队仍非常乐意提供相应的协助。-->
+  </view>
+</view>
+    </block>
+
+    <!-- 领养内容 -->
+    <block wx:if="{{activeTab === 'adopt'}}">
+      <!-- <image mode="widthFix" src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/lingyang.jpg" style="width: 100%;"></image> -->
+      <view class="img-aspect">
+  <image 
+    mode="widthFix" 
+    src="https://whutnr-1311545081.cos.ap-guangzhou.myqcloud.com/picture/领养.jpg"
+    class="img-content"
+  />
+</view>
+    <view class="guide-title">领养条件</view>
+      <view class="text">
+          <view><text class="highlight">1. 您应当具有责任心和爱心，能够善待动物。您承诺：</text>您将会充分了解宠物的习性和养宠风险，在决定领养前，已经征得家人/同住人/伴侣/房东的同意。</view>
+          <view><text class="highlight">2. 您已经年满十八岁，并且有稳定的经济来源和稳定的住所。</text>如您为未成年，请征得您家人的同意，并且由监护人作为动物的领养人，请您将您监护人联系方式告知我们。</view>
+          <view><text class="highlight">3. 您能够坚持科学养宠理念：</text>您能给宠物提供正规猫粮（不低于18元/500g，进口优先，全罐更佳）、使用猫砂。宠物和人类的身体构造不同，人类的食物并不适合他们。猫是肉食动物，正规的宠粮才能保证其正常营养需求，避免生病。</view>
+          <view><text class="highlight">4. 您能接受给宠物定时免疫、驱虫和适龄绝育：</text>完成宠物的免疫和驱虫能保障宠物的身体健康并且减少跳蚤等寄生虫对您生活环境造成的影响。绝育是我们的底线，我们坚决反对后院繁育。</view>
+          <view><text class="highlight">5. 请不要散养、笼养宠物：</text></view>
+          <view>• 散养宠物不利于它们的健康，散养宠物可能在外面沾染上寄生虫，也可能因为在垃圾场中吃到不健康的食物，从而导致各种疾病。</view>
+          <view>• 其次，散养宠物并不安全，因散养导致的宠物丢失经常发生。城市和农村中依然存在绑架动物后卖至肉馆变成他人口中食等现象，宠物车祸也不在少数。</view>
+          <view>• 幼猫处于幼年期（2-3月）笼养可以加速社会化、保障安全，但是超出这个年龄后笼养将对动物的心理健康和生理健康产生极大负面影响，不应继续笼养。</view>
+          <view><text class="highlight">6. 请一定做好封窗，注意开关门：</text></view>
+          <view>• 猫咪没有高空意识，没有合格封窗必然导致坠楼。原则上需要交付动物之前完成封窗。如果因为不可抗力或者其他原因，您在动物交付时未能及时完成封窗，务必保证动物与危险的门窗隔离开，且在三日内完成封窗。否则，我们将追回领养的动物。</view>
+          <view>• 开关门务必注意动物出走情况，猫的性格很容易产生好奇，部分猫咪可能喜欢从大门逃跑，开关门一定要注意防止猫咪走失，必要时加装一个防护栏杆。</view>
+          <view>• 如果动物走失，务必第一时间告知我们，并积极寻找，必要时请找猫团队协助寻找动物。如果因为自身疏忽导致猫咪走失，且不积极寻找，猫咪最终走失无法寻回，则为严重违约。</view>
+          <view><text class="highlight">7. 请保持和救助人的联系。</text>救助人将在您领养动物后长期为您提供养宠指导，您对该宠物或者养宠方法有疑惑可以随时与我们咨询，请您保持与我们的联系并且接受线上或线下回访。武大TNR小分队送出的每一只动物都与我们有着深厚的感情，我们希望与您一道照顾动物成长，让它平安幸福的生活下去。</view>
+          <view><text class="highlight">8. 关于押金：</text>武大TNR小分队所有的宠物送养皆为无偿送养，但我们会收取小额押金：押金的目的在于能够确保您理性领养。</view>
+          <view>押金的总金额为<text class="highlight">600元</text>。押金的规则为：</view>
+          <view>• 未注射疫苗和绝育的动物，在宠物完成三针猫三联免疫并完成绝育手术，且满足领养12个月，退还押金共计600元；</view>
+          <view>• 若由甲方代为完成绝育手术、注射疫苗的，则由甲方扣下实际绝育手术、注射疫苗成本，在满足领养12个月后退还剩余押金。</view>
+          <view><text class="highlight">9. 您接受我们送猫上门和领养前家访。</text>在我们确认您的领养意向并审核通过后，我们将会前往您的住址进行身份信息确认，并且查看您的住宅安全情况（如封窗等），我们将当面与您签订领养协议并且押身份证复印件。</view>
+          <view><text class="highlight">10. 我们强烈建议领养当日去动物医院进行入户体检。</text>便于您及时了解动物的实际健康状况，也同时避免未来可能因为动物健康状况产生的纠纷。</view>
+          <view><text class="highlight">11. 若动物无法适应新家，请您及时告知我们。</text></view>
+          <view>• 本组织会在领养前告知您宠物的一些习性以及健康状况，您在了解后应当确认并承诺能够接受，若您在承诺后并反悔，本协会将会依照协议扣下您的押金。</view>
+          <view>• 并且请您不要在未经沟通的前提下将动物移交给他人（包括外地亲属或伴侣），请和我们重新联系办理领养人变更手续。</view>
+          <view>• 若您盲目领养后反悔，随意将宠物退养，我们需要重新安置并且再寻找新的领养人，大大增加了我们的工作量，并且可能因为随着年龄增长错过最佳领养时期（2-3个月），使得动物失去领养机会，重新变成流浪猫。您的小小决定，会改变它的一生。</view>
+          <view><text class="highlight">12. 我们坚决反对宿舍养宠，请来领养的在校学生遵守本校的学生手册和相关管理条例。如果您为在读学生，计划将动物送回家乡，请联系正规、可靠宠物托运。</text></view>
+
+        </view>
+    </block>
+
+
+
+  </view>
+</view>
+
+<!-- 悬浮扭蛋机按钮 -->
+<view 
+  class="floating-gacha-btn"
+  bindtap="goToGashapon"
+>
+  🎯
+</view>
