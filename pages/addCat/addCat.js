@@ -306,6 +306,33 @@ Page({
     return result.url;
   },
 
+  downloadFileAsync(url) {
+    return new Promise((resolve, reject) => {
+      wx.downloadFile({
+        url,
+        success: (res) => {
+          if (res.statusCode === 200 && res.tempFilePath) {
+            resolve(res.tempFilePath);
+            return;
+          }
+          reject(new Error(`下载失败(${res.statusCode || 'unknown'})`));
+        },
+        fail: (err) => reject(err)
+      });
+    });
+  },
+
+  async reindexAdditionalImagesByUpload(catName, indexToDelete, currentCount) {
+    const ts = Date.now();
+    for (let i = indexToDelete + 1; i <= currentCount; i++) {
+      const sourceFile = `${catName}${i}.jpg`;
+      const targetFile = `${catName}${i - 1}.jpg`;
+      const sourceUrl = `${this.data.url}${encodeURIComponent(sourceFile)}?_t=${ts}_${i}`;
+      const tempPath = await this.downloadFileAsync(sourceUrl);
+      await this.uploadLocalImageFile(tempPath, targetFile);
+    }
+  },
+
   uploadMainImage() {
     this.uploadJpgImage('main');
   },
@@ -561,24 +588,42 @@ Page({
             catName,
             indexToDelete,
             currentCount
-          }).then(response => {
-            wx.hideLoading();
+          }).then(async (response) => {
             if (!response?.success) {
               throw new Error('云函数调用失败');
             }
             const result = response.result || {};
-            if (!result.success) {
-              throw new Error(result.error || result.message || '删除失败');
+
+            // 常规路径：云函数已完成删除+重排
+            if (result.success && Number.isInteger(result.newCount)) {
+              this.setData({
+                ['cat.addPhotoNumber']: Math.max(0, result.newCount).toString(),
+                imageUpdateKey: Date.now()
+              });
+              wx.hideLoading();
+              wx.showToast({ title: '删除成功', icon: 'success' });
+              return;
             }
-            if (!Number.isInteger(result.newCount)) {
+
+            const errorMsg = result.error || result.message || '删除失败';
+
+            // 兜底路径：deleteImage 缺少密钥时，改用 uploadImage 重排，保证功能可用
+            if (errorMsg.includes('Missing COS secrets')) {
+              await this.reindexAdditionalImagesByUpload(catName, indexToDelete, currentCount);
+              this.setData({
+                ['cat.addPhotoNumber']: Math.max(0, currentCount - 1).toString(),
+                imageUpdateKey: Date.now()
+              });
+              wx.hideLoading();
+              wx.showToast({ title: '删除成功', icon: 'success' });
+              return;
+            }
+
+            if (result.success && !Number.isInteger(result.newCount)) {
               throw new Error('云函数未完成重排，请先部署 deleteImage 最新版本');
             }
 
-            this.setData({
-              ['cat.addPhotoNumber']: Math.max(0, result.newCount).toString(),
-              imageUpdateKey: Date.now()
-            });
-            wx.showToast({ title: '删除成功', icon: 'success' });
+            throw new Error(errorMsg);
           }).catch(err => {
             wx.hideLoading();
             console.error('删除失败:', err);
